@@ -48,79 +48,73 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center p-4">
-      {/* Container flex para centralizar */}
-      <div className="w-full max-w-4xl flex flex-col items-center">
+    <div className="min-h-screen bg-banestes-cinza p-6 flex flex-col items-center">
+      <div className="w-full max-w-5xl">
         {/* Título centralizado */}
-        <h1 className="text-2xl font-bold mb-4 text-center">Lista de Clientes</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center text-banestes-azul">
+          Lista de Clientes
+        </h1>
 
-        {/* Campo de pesquisa centralizado */}
-        <div className="flex justify-center mb-4 w-full max-w-md">
+        {/* Campo de pesquisa */}
+        <div className="mb-6 flex justify-center">
           <input
             type="text"
             placeholder="Pesquisar por nome ou CPF/CNPJ"
             value={filtro}
             onChange={(e) => {
               setFiltro(e.target.value);
-              setPaginaAtual(1); // Reinicia para a primeira página ao filtrar
+              setPaginaAtual(1);
             }}
-            className="p-2 border border-gray-300 rounded w-full"
+            className="w-full max-w-md px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-banestes-azul"
+            aria-label="Pesquisar clientes"
           />
         </div>
-      </div>
 
-      {/* Exibição dos clientes */}
-      {loading ? (
-        <p className="text-center">Carregando...</p>
-      ) : (
-        <>
-          <ul className="space-y-4 w-full max-w-4xl mx-auto">
-            {clientesPaginados.map((cliente) => (
-              <li
-                key={cliente.id}
-                className="border border-gray-300 rounded p-4 shadow"
+        {/* Lista de clientes */}
+        {loading ? (
+          <p className="text-center text-gray-600">Carregando...</p>
+        ) : (
+          <>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {clientesPaginados.map((cliente) => (
+                <li
+                  key={cliente.id}
+                  className="bg-white border border-gray-200 rounded-lg p-4 shadow hover:shadow-md transition"
+                >
+                  <p className="text-banestes-azul font-semibold">
+                    <Link to={`/cliente/${cliente.id}`} className="hover:underline">
+                      {cliente.nome}
+                    </Link>
+                  </p>
+                  <p className="text-sm"><strong>CPF/CNPJ:</strong> {cliente.cpfCnpj}</p>
+                  <p className="text-sm"><strong>Email:</strong> {cliente.email}</p>
+                </li>
+              ))}
+            </ul>
+
+            {/* Paginação */}
+            <div className="flex justify-center items-center mt-8 space-x-4">
+              <button
+                onClick={irParaPaginaAnterior}
+                disabled={paginaAtual === 1}
+                className="px-4 py-2 rounded bg-banestes-azul text-white hover:bg-blue-700 disabled:opacity-50"
               >
-                <p>
-                  <strong>Nome:</strong>{" "}
-                  <Link
-                    to={`/cliente/${cliente.id}`}
-                    className="text-blue-600 font-semibold"
-                  >
-                    {cliente.nome}
-                  </Link>
-                </p>
-                <p>
-                  <strong>CPF/CNPJ:</strong> {cliente.cpfCnpj}
-                </p>
-                <p>
-                  <strong>Email:</strong> {cliente.email}
-                </p>
-              </li>
-            ))}
-          </ul>
-
-          {/* Paginação */}
-          <div className="flex justify-center items-center mt-6 space-x-4">
-            <button
-              onClick={irParaPaginaAnterior}
-              disabled={paginaAtual === 1}
-              className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
-            >
-              Anterior
-            </button>
-            <span>
-              Página {paginaAtual} / {totalPaginas}
-            </span>
-            <button
-              onClick={irParaProximaPagina}
-              disabled={paginaAtual === totalPaginas}
-              className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
-            >
-              Próximo
-            </button>
-          </div>
-        </>
-      )}
+                Anterior
+              </button>
+              <span className="text-gray-700 font-medium">
+                Página {paginaAtual} de {totalPaginas}
+              </span>
+              <button
+                onClick={irParaProximaPagina}
+                disabled={paginaAtual === totalPaginas}
+                className="px-4 py-2 rounded bg-banestes-verde text-white hover:bg-green-700 disabled:opacity-50"
+              >
+                Próximo
+              </button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };
