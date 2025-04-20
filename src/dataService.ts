@@ -1,9 +1,9 @@
-import Papa from "papaparse";
+import Papa, { ParseResult } from "papaparse";
 import { Cliente, Conta, Agencia } from "./types";
 
 // Converte texto CSV para objetos, usando cabeçalhos da planilha
-const parseCSV = <T = any>(csvText: string): T[] => {
-  const parsed = Papa.parse<T>(csvText, {
+const parseCSV = <T>(csvText: string): T[] => {
+  const parsed: ParseResult<T> = Papa.parse<T>(csvText, {
     header: true,
     skipEmptyLines: true,
     dynamicTyping: false,
@@ -25,7 +25,7 @@ export const fetchClientes = async (): Promise<Cliente[]> => {
     "https://docs.google.com/spreadsheets/d/1PBN_HQOi5ZpKDd63mouxttFvvCwtmY97Tb5if5_cdBA/gviz/tq?tqx=out:csv&sheet=clientes"
   );
   const csvText = await res.text();
-  const rows = parseCSV(csvText);
+  const rows = parseCSV<Cliente>(csvText);
 
   return rows.map((row: any) => ({
     id: row.id,
@@ -48,7 +48,7 @@ export const fetchContas = async (): Promise<Conta[]> => {
     "https://docs.google.com/spreadsheets/d/1PBN_HQOi5ZpKDd63mouxttFvvCwtmY97Tb5if5_cdBA/gviz/tq?tqx=out:csv&sheet=contas"
   );
   const csvText = await res.text();
-  const rows = parseCSV(csvText);
+  const rows = parseCSV<Conta>(csvText);
 
   return rows.map((row: any) => ({
     id: row.id,
@@ -65,7 +65,7 @@ export const fetchAgencias = async (): Promise<Agencia[]> => {
     "https://docs.google.com/spreadsheets/d/1PBN_HQOi5ZpKDd63mouxttFvvCwtmY97Tb5if5_cdBA/gviz/tq?tqx=out:csv&sheet=agencias"
   );
   const csvText = await res.text();
-  const rows = parseCSV(csvText);
+  const rows = parseCSV<Agencia>(csvText);
 
   return rows.map((row: any) => ({
     id: row.id,
