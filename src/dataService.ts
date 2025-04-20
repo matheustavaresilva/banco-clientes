@@ -1,14 +1,14 @@
-import Papa, { ParseResult } from "papaparse";
+import Papa from "papaparse";
 import { Cliente, Conta, Agencia } from "./types";
 
 // Converte texto CSV para objetos, usando cabeçalhos da planilha
 const parseCSV = <T>(csvText: string): T[] => {
-  const parsed: ParseResult<T> = Papa.parse<T>(csvText, {
+  const parsed = Papa.parse(csvText, {
     header: true,
     skipEmptyLines: true,
     dynamicTyping: false,
   });
-  return parsed.data;
+  return parsed.data as T[];
 };
 
 // Corrige problemas de acentuação (JoÃ£o -> João)
