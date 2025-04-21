@@ -1,14 +1,13 @@
-const Header = () => {
+import styles from './HeaderFooter.module.css';
+import { Link } from 'react-router-dom';
+
+export default function Header() {
   return (
-    <header className="bg-[#003366] text-white p-4 shadow">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <h1 className="text-xl font-bold">Banco Banestes</h1>
-        <nav>
-          <a href="/" className="ml-4 hover:underline">Início</a>
-        </nav>
-      </div>
+    <header className={styles.header}>
+      <h1 className={styles.headerTitle}>Banco Banestes</h1>
+      <nav className={styles.navLinks}>
+        <Link to="/">Clientes</Link>
+      </nav>
     </header>
   );
-};
-
-export default Header;
+}
